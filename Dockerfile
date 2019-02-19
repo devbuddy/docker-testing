@@ -18,6 +18,6 @@ RUN echo 'export PATH="/home/circleci/.pyenv/bin:$PATH"' > ~/.bashrc.new \
 RUN ~/.pyenv/bin/pyenv install 3.6.5 \
  && ~/.pyenv/bin/pyenv global 3.6.5
 
-RUN curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sudo sh -s -- -b /usr/local/bin v1.10.2
+RUN curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sudo sh -s -- -b /usr/local/bin v1.15.0
 
 RUN go get github.com/tcnksm/ghr
