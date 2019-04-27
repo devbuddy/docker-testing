@@ -1,0 +1,6 @@
+up: []
+
+commands:
+  release:
+    desc: Create a new build on Docker Hub to create a new image
+    run: ./release.sh
