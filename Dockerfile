@@ -1,7 +1,7 @@
 # Automatic build enabled on https://hub.docker.com/r/devbuddy/testing/
 # Images are tagged with the tags and branch names, except for master: "latest".
 
-FROM circleci/golang:1.12.4
+FROM circleci/golang:1.13.1
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -18,5 +18,5 @@ RUN echo 'export PATH="/home/circleci/.pyenv/bin:$PATH"' > ~/.bashrc.new \
 RUN ~/.pyenv/bin/pyenv install 3.6.5 \
  && ~/.pyenv/bin/pyenv global 3.6.5
 
-RUN curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sudo sh -s -- -b /usr/local/bin v1.15.0
+RUN curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sudo sh -s -- -b /usr/local/bin v1.19.1
 RUN go get github.com/tcnksm/ghr
