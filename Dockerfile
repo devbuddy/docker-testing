@@ -1,22 +1,35 @@
-# Automatic build enabled on https://hub.docker.com/r/devbuddy/testing/
-# Images are tagged with the tags and branch names, except for master: "latest".
-
-FROM circleci/golang:1.15.2
+FROM ubuntu:focal
 
 ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && \
+    apt-get -y install --no-install-recommends \
+      ca-certificates zsh git curl wget \
+      make build-essential llvm\
+      libssl-dev \
+      zlib1g-dev \
+      libbz2-dev \
+      libreadline-dev \
+      libsqlite3-dev \
+      libncurses5-dev \
+      xz-utils \
+      tk-dev \
+      libxml2-dev \
+      libxmlsec1-dev \
+      libffi-dev \
+      liblzma-dev \
+      && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN sudo apt-get --no-install-recommends -y install \
-        git make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl zsh \
- && curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
+RUN useradd -ms /bin/bash tester
+WORKDIR /home/tester
+RUN chown -R tester .
+USER tester
+ENV HOME /home/tester
 
-# Bashrc returns immediately when run in non-interactive mode, but we still want to change the PATH
-RUN echo 'export PATH="/home/circleci/.pyenv/bin:$PATH"' > ~/.bashrc.new \
- && echo 'export PATH="/home/circleci/.pyenv/shims:${PATH}"' >> ~/.bashrc.new \
- && cat ~/.bashrc >> ~/.bashrc.new \
- && mv ~/.bashrc.new ~/.bashrc
-
-RUN ~/.pyenv/bin/pyenv install 3.6.5 \
- && ~/.pyenv/bin/pyenv global 3.6.5
-
-RUN curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sudo sh -s -- -b /usr/local/bin v1.31.0
-RUN go get github.com/tcnksm/ghr
+RUN git clone --depth=1 https://github.com/pyenv/pyenv.git .pyenv
+ENV PYENV_ROOT="$HOME/.pyenv"
+ENV PATH="$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH"
+RUN pyenv install 3.9.0
+RUN pyenv global 3.9.0
+# RUN pyenv rehash

@@ -1,5 +1,7 @@
 # Docker image for the tests of DevBuddy
 
+The goal of this image is to speed up the start of CI flows in https://github.com/devbuddy/devbuddy.
+
 ## Trigger a new build
 
 ```bash
